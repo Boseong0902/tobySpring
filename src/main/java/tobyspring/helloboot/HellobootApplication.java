@@ -20,24 +20,29 @@ public class HellobootApplication {
 	public static void main(String[] args) {
 //		SpringApplication.run(HellobootApplication.class, args);
 		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-		WebServer webServer = factory.getWebServer(new ServletContextInitializer() { // 서블릿 등록 익명 클래스
+		WebServer webServer = factory.getWebServer(new ServletContextInitializer() {
 			@Override
 			public void onStartup(ServletContext servletContext) throws ServletException {
-				servletContext.addServlet("hello", new HttpServlet() { // 서블릿 이름, 서블릿 객체를 인자로 전달
+				servletContext.addServlet("frontController", new HttpServlet() { // frontController를 만들어보자
 					@Override
 					protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-						// 요청 제작
+						// 각 서블릿의 중복 기능들 정의했다고 치고, 기존 컨트롤러가 했던 매핑을 여기서 구현해야함
+						// 요청을 가지고 매핑 - 메서드, 패스, 헤더, 바디 활용
+						if(req.getRequestURI().equals("/hello") && req.getMethod().equals("GET")) { // 즉, hello 패스로 get 요청을 보내면 처리하도록 설정
 						String name = req.getParameter("name");
 
-						// 응답 제작
-						// 상태 코드
 						resp.setStatus(HttpStatus.OK.value());
-						// 헤더(컨텐츠 타입 헤더)
 						resp.setHeader("Content-Type", "text/plain");
-						// 바디
 						resp.getWriter().println("Hello " + name);
+						}
+						else if(req.getRequestURI().equals("/users")){
+							//정의
+						}
+						else{
+							resp.setStatus(HttpStatus.NOT_FOUND.value()); // 요청 못찾음 404
+						}
 					}
-				}).addMapping("/Hello"); // 매핑 패스 지정
+				}).addMapping("/*"); // 모든 요청이 다 frontController를 거치도록
 			}
 		});
 		webServer.start();
