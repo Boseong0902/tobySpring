@@ -1,7 +1,14 @@
 package tobyspring.helloboot;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Objects;
 
+@RestController
+@RequestMapping("/myapp")
 public class HelloController {
     private final HelloService helloService; // 컨트롤러에서 의존성 주입받을 변수 선언
 
@@ -13,6 +20,7 @@ public class HelloController {
         this.helloService = helloService; // 생성자 파라미터로 HelloService인터페이스의 구현체를 전달받음
     }
 
+    @GetMapping("/hello")
     public String hello(String name){
 //        SimpleHelloService simpleHelloService = new SimpleHelloService();
         return helloService.sayHello(Objects.requireNonNull(name)); // 어떤 구현체를 전달받느냐에 따라서 오버라이딩된 sayHello가 달라질 수 있음
