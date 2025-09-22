@@ -1,5 +1,6 @@
 package tobyspring.helloboot;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -9,6 +10,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/myapp")
+@Component
 public class HelloController {
     private final HelloService helloService; // 컨트롤러에서 의존성 주입받을 변수 선언
 
