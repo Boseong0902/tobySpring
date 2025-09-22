@@ -22,6 +22,7 @@ public class HellobootApplication {
 	public static void main(String[] args) {
 		GenericApplicationContext applicationContext = new GenericApplicationContext(); // 스프링 컨테이너 구현 인터페이스
 		applicationContext.registerBean(HelloController.class);
+		applicationContext.registerBean(SimpleHelloService.class);
 		applicationContext.refresh();
 
 //		SpringApplication.run(HellobootApplication.class, args);
