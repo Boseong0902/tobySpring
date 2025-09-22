@@ -11,17 +11,23 @@ import org.apache.catalina.startup.Tomcat;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import java.io.IOException;
 
 //@SpringBootApplication
 public class HellobootApplication {
 	public static void main(String[] args) {
+		GenericApplicationContext applicationContext = new GenericApplicationContext(); // 스프링 컨테이너 구현 인터페이스
+		applicationContext.registerBean(HelloController.class);
+		applicationContext.refresh();
+
 //		SpringApplication.run(HellobootApplication.class, args);
 		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
 		WebServer webServer = factory.getWebServer(new ServletContextInitializer() {
-			HelloController helloController = new HelloController(); // helloController가져와서
+//			HelloController helloController = new HelloController();
 			@Override
 			public void onStartup(ServletContext servletContext) throws ServletException {
 				servletContext.addServlet("frontController", new HttpServlet() { // frontController를 만들어보자
@@ -30,11 +36,12 @@ public class HellobootApplication {
 						if(req.getRequestURI().equals("/hello") && req.getMethod().equals("GET")) { // hello패스로 get요청 받으면
 						String name = req.getParameter("name");
 
-						String ret = helloController.hello(name); // 리턴값 만들어주고
+						HelloController helloController = applicationContext.getBean(HelloController.class);
+						String ret = helloController.hello(name);
 
 						resp.setStatus(HttpStatus.OK.value());
-						resp.setHeader("Content-Type", "text/plain");
-						resp.getWriter().println(ret); // 리턴값 출력
+						resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
+						resp.getWriter().println(ret);
 						}
 						else if(req.getRequestURI().equals("/users")){
 							//정의
@@ -43,7 +50,7 @@ public class HellobootApplication {
 							resp.setStatus(HttpStatus.NOT_FOUND.value()); // 요청 못찾음 404
 						}
 					}
-				}).addMapping("/*"); // 모든 요청이 다 frontController를 거치도록
+				}).addMapping("/*");
 			}
 		});
 		webServer.start();
