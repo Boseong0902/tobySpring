@@ -1,5 +1,7 @@
 package tobyspring.helloboot;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
@@ -7,11 +9,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.swing.*;
 import java.io.IOException;
 
-//@SpringBootApplication
+@SpringBootApplication
 @Configuration
-@ComponentScan
+//@ComponentScan
 public class HellobootApplication {
 	@Bean
 	public ServletWebServerFactory servletContainer() {
@@ -24,6 +27,6 @@ public class HellobootApplication {
 	}
 
 	public static void main(String[] args) {
-		mybootApplication.run(HellobootApplication.class, args); // 이게 바로 우리가 기존에 쓰던 @SpringBootApplication 애너테이션
+		SpringApplication.run(HellobootApplication.class, args); // 이게 바로 우리가 기존에 쓰던 @SpringBootApplication 애너테이션
 	}
 }
