@@ -18,12 +18,12 @@ public class HelloControllerTest {
         HelloController helloController = new HelloController(name -> name);
 
         Assertions.assertThatThrownBy(()->{
-            String ret = helloController.hello(null);
+            helloController.hello(null);
         }).isInstanceOf(IllegalArgumentException.class);
         // null값을 넣어도 테스트 통과
 
         Assertions.assertThatThrownBy(()->{
-            String ret = helloController.hello("");
+            helloController.hello("");
         }).isInstanceOf(IllegalArgumentException.class);
         // 빈 문자열을 넣어도 테스트 통과
     }
