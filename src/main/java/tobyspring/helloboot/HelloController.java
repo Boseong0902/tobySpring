@@ -24,6 +24,8 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String hello(String name){
+        if (name == null || name.length()==0) throw new IllegalArgumentException();
+        // null값 뿐만 아니라 공백 값을 인자로 받았을 때도 테스트 코드가 인지할 수 있도록
 //        SimpleHelloService simpleHelloService = new SimpleHelloService();
         return helloService.sayHello(Objects.requireNonNull(name)); // 어떤 구현체를 전달받느냐에 따라서 오버라이딩된 sayHello가 달라질 수 있음
 
